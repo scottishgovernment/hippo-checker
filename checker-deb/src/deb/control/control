@@ -1,0 +1,8 @@
+Package: checker
+Version: [[version]]
+Section: mygov
+Priority: optional
+Architecture: all
+Description: Checker Repository Maintenance Tool
+Maintainer: martin.ellis@gov.scot
+Depends: java8-runtime-headless

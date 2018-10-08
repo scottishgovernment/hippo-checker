@@ -1,0 +1,9 @@
+#!/bin/sh
+. /etc/profile
+set -eu
+JAVA="${JAVA_HOME:-/usr}/bin/java"
+exec "$JAVA" \
+  -XX:+UseSerialGC \
+  -Dlogback.configurationFile=/opt/checker/logback.xml \
+  -jar /opt/checker/checker.jar \
+  "$@"
