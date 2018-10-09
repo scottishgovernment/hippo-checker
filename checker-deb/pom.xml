@@ -6,7 +6,7 @@
   <parent>
     <groupId>scot.gov.hippo</groupId>
     <artifactId>checker</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
 
   <artifactId>checker-deb</artifactId>
@@ -18,7 +18,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>checker-cli</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0.1</version>
     </dependency>
   </dependencies>
 
