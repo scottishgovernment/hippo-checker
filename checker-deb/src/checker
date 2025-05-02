@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+num_args="$#"
+arg_num=1
+stop=
+while [ "$arg_num" -le $num_args ]; do
+  arg="$1"
+  case "$arg" in
+    --stop)
+      stop=y
+      shift;;
+    *)
+      shift
+      set -- "$@" "$arg"
+  esac
+  arg_num=$(( arg_num + 1 ))
+done
+
+if [ "$stop" = y ]; then
+  hippo_active=$(systemctl is-active hippo)
+  sudo systemctl stop hippo
+fi
+
+sudo -iu hippo /opt/checker/run "$@"
+
+if [ "$stop" = y ] && [ "$hippo_active" = active ]; then
+  sudo systemctl start hippo
+fi

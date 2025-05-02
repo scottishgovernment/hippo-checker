@@ -66,6 +66,15 @@
                 <filemode>755</filemode>
               </mapper>
             </data>
+            <data>
+              <src>${basedir}/src/checker</src>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/opt/checker</prefix>
+                <filemode>755</filemode>
+              </mapper>
+            </data>
           </dataSet>
         </configuration>
       </plugin>
