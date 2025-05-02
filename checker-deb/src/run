@@ -1,9 +1,52 @@
 #!/bin/sh
-. /etc/profile
 set -eu
 JAVA="${JAVA_HOME:-/usr}/bin/java"
-exec "$JAVA" \
-  -XX:+UseSerialGC \
-  -Dlogback.configurationFile=/opt/checker/logback.xml \
-  -jar /opt/checker/checker.jar \
-  "$@"
+
+usage() {
+  local progname=$(basename "$0")
+  cat <<EOF
+${progname} - Run the Bloomreach Checker repository maintenance tool.
+
+${progname}
+  Show this message
+${progname} --help
+  Show built-in help for checker
+${progname} clean
+  Clean version histories and then the data store by running the
+  cleanvh task and then the cleands task.
+  The cleands task runs only if cleanvh runs successfully.
+  This command is implemented by this script, and not supported by
+  Bloomreach or the checker tool.
+${progname} cleanvh
+  Clean version histories
+${progname} cleands
+  Clean the data store
+${progname} check [uuid1, uuid2, uuidn [--recursive]]
+${progname} fix [uuid1, uuid2, uuidn [--recursive]]
+${progname} dump uuid1 [uuid2, uuidn]
+
+For detailed documentation on the checker tool, see:
+https://xmdocumentation.bloomreach.com/library/administration/maintenance/checker-tool.html
+EOF
+}
+
+clean=
+if [ "$#" = 0 ]; then
+  usage
+  exit 0
+fi
+if [ "${1:-}" = clean ]; then
+  shift
+  clean=y
+fi
+
+set -- -jar /opt/checker/checker.jar "$@"
+set -- -Dlogback.configurationFile=/opt/checker/logback.xml "$@"
+set -- -XX:+UseSerialGC "$@"
+
+if [ -z "$clean" ]; then
+  exec "$JAVA" "$@"
+fi
+
+"$JAVA" "$@" cleanvh
+exec "$JAVA" "$@" cleands
